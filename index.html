@@ -1,1 +1,97 @@
-TextLife
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TextLife</title>
+	<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+	<script src='http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js'></script>
+	<link rel='stylesheet' href='http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css'/>
+	<link href="https://fonts.googleapis.com/css?family=Overpass+Mono" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<style type="text/css">
+		body {
+			font-family: 'Overpass Mono', monospace;
+			font-size: 40px;
+		}
+		#question {
+			padding-top: 100px;
+		}
+		#choices-container {
+			position: fixed;
+			width: 80%;
+			bottom: 20px;
+			left: 50%;
+		}
+		#choices {
+			position: relative;
+			left: -50%;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<p id="question"></p>		
+	</div>
+	<div id="choices-container">
+		<div id="choices">
+			<button class="btn btn-block choice" onclick="act(1)"></button>
+			<button class="btn btn-block choice" onclick="act(2)"></button>
+			<button class="btn btn-block choice" onclick="act(3)"></button>
+			<button class="btn btn-block choice" onclick="act(4)"></button>
+		</div>			
+	</div>
+</body>
+<script type="text/javascript">
+	var story_data = {
+		// all data of story are here, section by section
+		"201701150005":{
+			question: "This is the first question. This is a sample question. Write your own story!",
+			choices: [
+				"This is the first choice, to 2nd question",
+				"Second choice, to 2nd question",
+				"Third choice, to 2nd question"],
+			destination: [
+				"201701150029"
+			],
+			logic:function(_whichChoice, _status){
+				JumpTo(this.destination[0]);
+			}
+		},
+
+		"201701150029":{
+			question: "This is the <span style='color:red'>Second</span> question. See, it's <span style='color:red'>EASY</span>!",
+			choices: [
+				"Choice 1: come back to the 1st question",
+				"Second choice: stay in this question"],
+			destination: [
+				"201701150005", "201701150029"
+			],
+			logic:function(_whichChoice, _status){
+				switch(_whichChoice) {
+					case 1: JumpTo(this.destination[0]); break;
+					case 2: JumpTo(this.destination[1]); break;
+				}				
+			}
+		}
+
+	}
+	var now_uuid; // indicate where am I in the story
+	var status = {
+		// store user's status
+	};
+	function JumpTo(_uuid) { // jump to a new section
+		now_uuid = _uuid;
+		$('#question').html(story_data[_uuid].question); // show the question
+		for (i = 0;i < 4;++i)
+			$('.choice').eq(i).css("display", "none");
+		for (i = 0;i < story_data[_uuid].choices.length;++i) { // show choices
+			$('.choice').eq(i).html(story_data[_uuid].choices[i]);
+			$('.choice').eq(i).css("display", "block");
+		}
+		
+	}
+	function act(which) { // Act according to the choice
+		story_data[now_uuid].logic(which, status);
+	}
+	JumpTo("201701150005"); // Initialize
+</script>
+</html>
