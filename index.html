@@ -6,77 +6,147 @@
 	<script src='https://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js'></script>
 	<link rel='stylesheet' href='https://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css'/>
 	<link href="https://fonts.googleapis.com/css?family=Overpass+Mono" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<style type="text/css">
 		body {
 			font-family: 'Overpass Mono', monospace;
-			font-size: 40px;
+			font-size: 20px;
 		}
 		#question {
-			padding-top: 100px;
-		}
-		#choices-container {
-			position: fixed;
-			width: 80%;
-			bottom: 20px;
-			left: 50%;
+			padding-top: 5px;
 		}
 		#choices {
-			position: relative;
-			left: -50%;
+			margin: auto;
+		}
+		nav {
+			font-family: 'Oswald', sans-serif;
 		}
 	</style>
 </head>
 <body>
+	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="https://github.com/functionadvanced/TextLife">TextLife</a>
+			</div>
+			<button class="btn btn-default navbar-btn" onclick="Init()">Restart</button>
+		</div>
+	</nav>
+
 	<div class="container">
-		<p id="question"></p>		
+		<p id="question"></p>
+		<div id="choices-container">
+			<div id="choices">
+				<button class="btn btn-block choice" onclick="act(0)"></button>
+				<button class="btn btn-block choice" onclick="act(1)"></button>
+				<button class="btn btn-block choice" onclick="act(2)"></button>
+				<button class="btn btn-block choice" onclick="act(3)"></button>
+			</div>			
+		</div>
+		<br/>
+		<div>
+			<p>Diagram</p>
+			<canvas id="myCanvas" width="2000" height="2000"></canvas>
+		</div>
 	</div>
-	<div id="choices-container">
-		<div id="choices">
-			<button class="btn btn-block choice" onclick="act(1)"></button>
-			<button class="btn btn-block choice" onclick="act(2)"></button>
-			<button class="btn btn-block choice" onclick="act(3)"></button>
-			<button class="btn btn-block choice" onclick="act(4)"></button>
-		</div>			
-	</div>
+	
 </body>
 <script type="text/javascript">
 	var story_data = {
 		// all data of story are here, section by section
+		/*
+		// sample section
+		"201712345678": {
+			question: "",
+			choices: [],
+			destination: [],
+			logic:function(_whichChoice, _status){
+				JumpTo(this.destination[_whichChoice]);
+			}
+		},
+		*/
+		//>>>>>>>> Begin your story here <<<<<<<<<<
 		"201701150005":{
-			question: "This is the first question. This is a sample question. Write your own story!",
+			question: "You are a high school student. You just finished the last one of your final exam. In this summer vacation you plan to <span style='color:red'>[  ]</span>",
 			choices: [
-				"This is the first choice, to 2nd question",
-				"Second choice, to 2nd question",
-				"Third choice, to 2nd question"],
+				"have a trip to Australia",
+				"try a computer game 'Overwatch'",
+				"join a friend's party"],
 			destination: [
-				"201701150029"
+				"201701150029",
+				"201701161647",
+				"201701161648"
 			],
 			logic:function(_whichChoice, _status){
-				JumpTo(this.destination[0]);
+				JumpTo(this.destination[_whichChoice]);
 			}
 		},
 
 		"201701150029":{
-			question: "This is the <span style='color:red'>Second</span> question. See, it's <span style='color:red'>EASY</span>!",
+			question: "Australia is a wonderful place. After making that decision,you buy a flight ticket with <span style='color:red'>[  ]</span>",
 			choices: [
-				"Choice 1: come back to the 1st question",
-				"Second choice: stay in this question"],
+				"$200","$500","$1000"],
 			destination: [
-				"201701150005", "201701150029"
+				"201701161735", "201701161736", "201701161737"
 			],
 			logic:function(_whichChoice, _status){
-				switch(_whichChoice) {
-					case 1: JumpTo(this.destination[0]); break;
-					case 2: JumpTo(this.destination[1]); break;
-				}				
+				JumpTo(this.destination[_whichChoice]);
 			}
-		}
+		},
 
+		"201701161647":{
+			question: "Overwatch is so fun that you addict to it. After playing for 48 hours without sleeping, you die.<span style='color:red'>[ENDING: Die for Game]</span>",
+			choices: ["Try Again!"],
+			destination: ["201701150005"],
+			logic:function(_whichChoice, _status){
+				_status.endings.push("Game Master");
+				JumpTo(this.destination[_whichChoice]);
+			}
+		},
+
+		"201701161648":{
+			question: "On the way to the party, you die because of a severe car accident. <span style='color:red'>[ENDING: Drive Faster]</span>",
+			choices: ["Try Again!"],
+			destination: ["201701150005"],
+			logic:function(_whichChoice, _status){
+				_status.endings.push("Drive Faster");
+				JumpTo(this.destination[_whichChoice]);
+			}
+		},
+
+		"201701161735": {
+			question: "It's a ticket of economy class.",
+			choices: [],
+			destination: [],
+			logic:function(_whichChoice, _status){
+				JumpTo(this.destination[_whichChoice]);
+			}
+		},
+
+		"201701161736": {
+			question: "It's a ticket of business class.",
+			choices: [],
+			destination: [],
+			logic:function(_whichChoice, _status){
+				JumpTo(this.destination[_whichChoice]);
+			}
+		},
+
+		"201701161737": {
+			question: "It's a ticket of first class.",
+			choices: [],
+			destination: [],
+			logic:function(_whichChoice, _status){
+				JumpTo(this.destination[_whichChoice]);
+			}
+		},
+		//>>>>>>>> Write your story above <<<<<<<<<<
 	}
 	var now_uuid; // indicate where am I in the story
-	var status = {
+	var myStatus = {
 		// store user's status
+		endings:[]
 	};
 	function JumpTo(_uuid) { // jump to a new section
 		now_uuid = _uuid;
@@ -90,8 +160,53 @@
 		
 	}
 	function act(which) { // Act according to the choice
-		story_data[now_uuid].logic(which, status);
+		story_data[now_uuid].logic(which, myStatus);
 	}
-	JumpTo("201701150005"); // Initialize
+	function Init() {// Initialize
+		JumpTo("201701150005"); 
+	}
+	Init();
+
+	// draw relationship figure
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	ctx.font = "5px Oswald";
+	var sx = 500; // diagram size
+	var sy = 150;
+	function DrawTree(_x, _y, _uuid) { // draw the diagram
+		if (story_data[_uuid].flag) {
+			ctx.fillStyle = "purple";
+			ctx.fillText("****ENDING", _x*sx, _y*sy);
+			return _y;
+		}
+		story_data[_uuid].flag = true;
+		var len = story_data[_uuid].destination.length;
+		ctx.fillStyle = "red";
+		ctx.fillText("["+_uuid+"]", _x*sx, _y*sy);
+		var slen = story_data[_uuid].question.length;
+		var sindex = 0;
+		ctx.fillStyle = 'blue';
+		while(sindex < slen) {
+			ctx.fillText(story_data[_uuid].question.substr(sindex, 30), _x*sx, _y*sy+sindex/30*20+20);
+			sindex += 30;
+		}
+		ctx.beginPath();
+		ctx.arc(_x*sx,_y*sy,2,0,2*Math.PI);
+		ctx.stroke();
+		var now_pos = _y;
+		for (var i = 0;i < len;++i) {
+			if (i > 0)
+				now_pos++;
+			ctx.moveTo(_x*sx, _y*sy);
+			ctx.lineTo((_x+1)*sx, (now_pos)*sy);
+			ctx.stroke();
+			ctx.fillStyle = 'green';
+			ctx.fillText(story_data[_uuid].choices[i], (_x+0.5)*sx, (_y+now_pos)*0.5*sy);
+			now_pos=DrawTree(_x+1, now_pos, story_data[_uuid].destination[i]);
+		}
+		return now_pos;
+	}
+	DrawTree(0.1, 0.1, "201701150005");
+	
 </script>
 </html>
