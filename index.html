@@ -47,107 +47,19 @@
 		<br/>
 		<div>
 			<p>Diagram</p>
-			<canvas id="myCanvas" width="2000" height="2000"></canvas>
+			<canvas id="myCanvas" width="4000" height="2000"></canvas>
 		</div>
 	</div>
 	
 </body>
 <script type="text/javascript">
-	var story_data = {
-		// all data of story are here, section by section
-		/*
-		// sample section
-		"201712345678": {
-			question: "",
-			choices: [],
-			destination: [],
-			logic:function(_whichChoice, _status){
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-		*/
-		//>>>>>>>> Begin your story here <<<<<<<<<<
-		"201701150005":{
-			question: "You are a high school student. You just finished the last one of your final exam. In this summer vacation you plan to <span style='color:red'>[  ]</span>",
-			choices: [
-				"have a trip to Australia",
-				"try a computer game 'Overwatch'",
-				"join a friend's party"],
-			destination: [
-				"201701150029",
-				"201701161647",
-				"201701161648"
-			],
-			logic:function(_whichChoice, _status){
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-
-		"201701150029":{
-			question: "Australia is a wonderful place. After making that decision,you buy a flight ticket with <span style='color:red'>[  ]</span>",
-			choices: [
-				"$200","$500","$1000"],
-			destination: [
-				"201701161735", "201701161736", "201701161737"
-			],
-			logic:function(_whichChoice, _status){
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-
-		"201701161647":{
-			question: "Overwatch is so fun that you addict to it. After playing for 48 hours without sleeping, you die.<span style='color:red'>[ENDING: Die for Game]</span>",
-			choices: ["Try Again!"],
-			destination: ["201701150005"],
-			logic:function(_whichChoice, _status){
-				_status.endings.push("Game Master");
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-
-		"201701161648":{
-			question: "On the way to the party, you die because of a severe car accident. <span style='color:red'>[ENDING: Drive Faster]</span>",
-			choices: ["Try Again!"],
-			destination: ["201701150005"],
-			logic:function(_whichChoice, _status){
-				_status.endings.push("Drive Faster");
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-
-		"201701161735": {
-			question: "It's a ticket of economy class.",
-			choices: [],
-			destination: [],
-			logic:function(_whichChoice, _status){
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-
-		"201701161736": {
-			question: "It's a ticket of business class.",
-			choices: [],
-			destination: [],
-			logic:function(_whichChoice, _status){
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-
-		"201701161737": {
-			question: "It's a ticket of first class.",
-			choices: [],
-			destination: [],
-			logic:function(_whichChoice, _status){
-				JumpTo(this.destination[_whichChoice]);
-			}
-		},
-		//>>>>>>>> Write your story above <<<<<<<<<<
-	}
-	var now_uuid; // indicate where am I in the story
-	var myStatus = {
-		// store user's status
-		endings:[]
-	};
+	var story_data;
+	var now_uuid; // indicate which section of the story
+	$.getJSON("story.json", function(data){
+		story_data = data;
+		Init();
+		DrawTree(0.1, 0.1, "201701150005");
+	});
 	function JumpTo(_uuid) { // jump to a new section
 		now_uuid = _uuid;
 		$('#question').html(story_data[_uuid].question); // show the question
@@ -160,17 +72,15 @@
 		
 	}
 	function act(which) { // Act according to the choice
-		story_data[now_uuid].logic(which, myStatus);
+		JumpTo(story_data[now_uuid].destination[which]);
 	}
 	function Init() {// Initialize
 		JumpTo("201701150005"); 
 	}
-	Init();
-
 	// draw relationship figure
 	var canvas = document.getElementById("myCanvas");
 	var ctx = canvas.getContext("2d");
-	ctx.font = "10px sans-serif";
+	ctx.font = "15px sans-serif";
 	var sx = 500; // diagram size
 	var sy = 150;
 	function DrawTree(_x, _y, _uuid) { // draw the diagram
@@ -205,8 +115,6 @@
 			now_pos=DrawTree(_x+1, now_pos, story_data[_uuid].destination[i]);
 		}
 		return now_pos;
-	}
-	DrawTree(0.1, 0.1, "201701150005");
-	
+	}	
 </script>
 </html>
