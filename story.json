@@ -30,9 +30,9 @@
 	},
 
 	"201701161736": {
-		"question": "It's a ticket of business class.",
-		"choices": [],
-		"destination": []
+		"question": "It's a ticket of business class. You get on board and the plane takes off. You ask for a cup of [  ]",
+		"choices": ["coffee", "cola", "water"],
+		"destination": ["201701210117", "201701210118", "201701210119"]
 	},
 
 	"201701161737": {
@@ -67,6 +67,21 @@
 		"destination": ["201701150005"]
 	},
 	"201701192127": {
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701210117": {
+		"question": "You die because of caffeine allergy. [ENDING: Coffee Color]",
+		"choices": ["Try Again!"],
+		"destination": ["201701150005"]
+	},
+	"201701210118": {
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701210119": {
 		"question": "",
 		"choices": [],
 		"destination": []
