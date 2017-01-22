@@ -4,6 +4,7 @@ A simple text game.
 ## Story Model
 ### Structure
 The structure of the story is a tree. The beginning of the story is the root and endings are leaves.
+<a href="http://functionadvanced.github.io/TextLife/diagram.html">See here</a>
 ### Data
 The story data is stored in "story.json". Here is one sample entry of "story.json".
 ```json
