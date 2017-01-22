@@ -12,15 +12,41 @@
 		body {
 			font-family: 'Overpass Mono', monospace;
 			font-size: 20px;
+			background-color: #011A27;
 		}
 		#question {
 			padding-top: 5px;
+			color: #F0810F;
 		}
 		#choices {
 			margin: auto;
 		}
+		.choice {
+			background-color: #063852;
+			color: #E6DF44;
+			display: none;
+		}
+		.choice:focus, .choice:hover, .choice:active {
+			background-color: #063852;
+			color: #E6DF44;
+			outline: none;
+		}
 		nav {
 			font-family: 'Oswald', sans-serif;
+
+		}
+		.navbar {
+			background-color: #F0810F;
+			border-color: #F0810F;
+			border-radius: 0;
+		}
+		#brand {
+			color: #011A27;
+		}
+		#rstrt_btn {
+			background-color: #F0810F;
+			color: #011A27;
+			border-color: white;
 		}
 	</style>
 </head>
@@ -28,9 +54,9 @@
 	<nav class="navbar navbar-default">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="https://github.com/functionadvanced/TextLife">TextLife</a>
+				<a class="navbar-brand" id="brand" href="https://github.com/functionadvanced/TextLife">TextLife</a>
 			</div>
-			<button class="btn btn-default navbar-btn" onclick="Init()">Restart</button>
+			<button class="btn btn-default navbar-btn" id="rstrt_btn" onclick="Init()">Restart</button>
 		</div>
 	</nav>
 
@@ -44,11 +70,6 @@
 				<button class="btn btn-block choice" onclick="act(3)"></button>
 			</div>			
 		</div>
-		<br/>
-		<div>
-			<p>Diagram</p>
-			<canvas id="myCanvas" width="4000" height="2000"></canvas>
-		</div>
 	</div>
 	
 </body>
@@ -58,18 +79,22 @@
 	$.getJSON("story.json", function(data){
 		story_data = data;
 		Init();
-		DrawTree(0.1, 0.1, "201701150005");
 	});
 	function JumpTo(_uuid) { // jump to a new section
 		now_uuid = _uuid;
-		$('#question').html(story_data[_uuid].question); // show the question
-		for (i = 0;i < 4;++i)
-			$('.choice').eq(i).css("display", "none");
-		for (i = 0;i < story_data[_uuid].choices.length;++i) { // show choices
-			$('.choice').eq(i).html(story_data[_uuid].choices[i]);
-			$('.choice').eq(i).css("display", "block");
-		}
-		
+		$('#question').fadeOut(function(){
+			$('#question').html(story_data[_uuid].question); // show the question
+			$('#question').fadeIn();
+		});
+		$('#choices').fadeOut(function(){
+			for (i = 0;i < 4;++i)
+				$('.choice').eq(i).css("display", "none");
+			for (i = 0;i < story_data[_uuid].choices.length;++i) { // show choices
+				$('.choice').eq(i).html(story_data[_uuid].choices[i]);
+				$('.choice').eq(i).css("display", "block");
+			}
+			$('#choices').fadeIn();
+		});
 	}
 	function act(which) { // Act according to the choice
 		JumpTo(story_data[now_uuid].destination[which]);
@@ -77,44 +102,5 @@
 	function Init() {// Initialize
 		JumpTo("201701150005"); 
 	}
-	// draw relationship figure
-	var canvas = document.getElementById("myCanvas");
-	var ctx = canvas.getContext("2d");
-	ctx.font = "15px sans-serif";
-	var sx = 500; // diagram size
-	var sy = 150;
-	function DrawTree(_x, _y, _uuid) { // draw the diagram
-		if (story_data[_uuid].flag) {
-			ctx.fillStyle = "purple";
-			ctx.fillText("****ENDING", _x*sx, _y*sy);
-			return _y;
-		}
-		story_data[_uuid].flag = true;
-		var len = story_data[_uuid].destination.length;
-		ctx.fillStyle = "red";
-		ctx.fillText("["+_uuid+"]", _x*sx, _y*sy);
-		var slen = story_data[_uuid].question.length;
-		var sindex = 0;
-		ctx.fillStyle = 'blue';
-		while(sindex < slen) {
-			ctx.fillText(story_data[_uuid].question.substr(sindex, 30), _x*sx, _y*sy+sindex/30*20+20);
-			sindex += 30;
-		}
-		ctx.beginPath();
-		ctx.arc(_x*sx,_y*sy,2,0,2*Math.PI);
-		ctx.stroke();
-		var now_pos = _y;
-		for (var i = 0;i < len;++i) {
-			if (i > 0)
-				now_pos++;
-			ctx.moveTo(_x*sx, _y*sy);
-			ctx.lineTo((_x+1)*sx, (now_pos)*sy);
-			ctx.stroke();
-			ctx.fillStyle = 'green';
-			ctx.fillText(story_data[_uuid].choices[i], (_x+0.5)*sx, (_y+now_pos)*0.5*sy);
-			now_pos=DrawTree(_x+1, now_pos, story_data[_uuid].destination[i]);
-		}
-		return now_pos;
-	}	
 </script>
 </html>

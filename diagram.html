@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TextLife</title>
+		<script src='https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+		<style type="text/css">
+			body {
+				background-color: #f7efb9;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Story Structure</h1>
+		<canvas id="myCanvas" width="4000" height="2000"></canvas>
+	</body>
+	<script type="text/javascript">
+		var story_data;
+		$.getJSON("story.json", function(data){
+			story_data = data;
+			DrawTree(0.1, 0.1, "201701150005");
+		});
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+		ctx.font = "15px sans-serif";
+		var sx = 500; // diagram size
+		var sy = 150;
+		function DrawTree(_x, _y, _uuid) { // draw the diagram
+			if (story_data[_uuid].flag) {
+				ctx.fillStyle = "purple";
+				ctx.fillText("****ENDING", _x*sx, _y*sy);
+				return _y;
+			}
+			story_data[_uuid].flag = true;
+			var len = story_data[_uuid].destination.length;
+			ctx.fillStyle = "red";
+			ctx.fillText("["+_uuid+"]", _x*sx, _y*sy);
+			var slen = story_data[_uuid].question.length;
+			var sindex = 0;
+			ctx.fillStyle = 'blue';
+			while(sindex < slen) {
+				ctx.fillText(story_data[_uuid].question.substr(sindex, 30), _x*sx, _y*sy+sindex/30*20+20);
+				sindex += 30;
+			}
+			ctx.beginPath();
+			ctx.arc(_x*sx,_y*sy,2,0,2*Math.PI);
+			ctx.stroke();
+			var now_pos = _y;
+			for (var i = 0;i < len;++i) {
+				if (i > 0)
+					now_pos++;
+				ctx.moveTo(_x*sx, _y*sy);
+				ctx.lineTo((_x+1)*sx, (now_pos)*sy);
+				ctx.stroke();
+				ctx.fillStyle = 'green';
+				ctx.fillText(story_data[_uuid].choices[i], (_x+0.5)*sx, (_y+now_pos)*0.5*sy);
+				now_pos=DrawTree(_x+1, now_pos, story_data[_uuid].destination[i]);
+			}
+			return now_pos;
+		}	
+	</script>
+</html>
