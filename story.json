@@ -52,9 +52,9 @@
 		"destination": ["201701150005"]
 	},
 	"201701182125": {
-		"question": "",
-		"choices": [],
-		"destination": []
+		"question": "The plane crashes. Fortunately, you live because of the seat belt. Now your head is bleeding and you []",
+		"choices": ["call for help", "climb out of the plane", "find survivors around you"],
+		"destination": ["201701260001", "201701260002", "201701260003"]
 	},
 	"201701192125": {
 		"question": "You never wake up. The plane crashes. [ENDING: Sleeping Baby]",
@@ -82,6 +82,21 @@
 		"destination": []
 	},
 	"201701210119": {
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701260001": {
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701260002": {
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701260003": {
 		"question": "",
 		"choices": [],
 		"destination": []
