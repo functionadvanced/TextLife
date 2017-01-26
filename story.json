@@ -52,7 +52,7 @@
 		"destination": ["201701150005"]
 	},
 	"201701182125": {
-		"question": "The plane crashes. Fortunately, you live because of the seat belt. Now your head is bleeding and you []",
+		"question": "The plane crashes. Fortunately, you live because of the seat belt. Now your head is bleeding and you [  ]",
 		"choices": ["call for help", "climb out of the plane", "find survivors around you"],
 		"destination": ["201701260001", "201701260002", "201701260003"]
 	},
