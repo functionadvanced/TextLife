@@ -87,14 +87,14 @@
 		"destination": []
 	},
 	"201701260001": {
-		"question": "",
-		"choices": [],
-		"destination": []
+		"question": "In order to call 911, you take out the cellphone from the pocket and turn it on. Suddenly the plane explodes and you die. [ENDING: Gas Station]",
+		"choices": ["Try Again!"],
+		"destination": ["201701150005"]
 	},
 	"201701260002": {
-		"question": "",
-		"choices": [],
-		"destination": []
+		"question": "'Emm, staying here is dangerous. I must get out,' you think. At the moment you climb out, you fall and die. [ENDING: Danger Cliff]",
+		"choices": ["Try Again!"],
+		"destination": ["201701150005"]
 	},
 	"201701260003": {
 		"question": "",
