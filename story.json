@@ -97,6 +97,21 @@
 		"destination": ["201701150005"]
 	},
 	"201701260003": {
+		"question": "You find a survivor called Jimmy. Then you decide to find some [  ] from this plane.",
+		"choices": ["money", "food", "water"],
+		"destination": ["201701270001", "201701270002", "201701270003"]
+	},
+	"201701270001": {
+		"question": "After that you and Jimmy get out of the plane safely, and then the plane explodes. The crash site is a forest and money is useless. Two days later, you die. [ENDING: Millionaire]",
+		"choices": ["Try Again!"],
+		"destination": ["201701150005"]
+	},
+	"201701270002": {
+		"question": "You and Jimmy pick some food and get out of the plane safely, and then the plane explodes. The crash site is a forest and then you decide to [  ]",
+		"choices": [],
+		"destination": []
+	},
+	"201701270003": {
 		"question": "",
 		"choices": [],
 		"destination": []
