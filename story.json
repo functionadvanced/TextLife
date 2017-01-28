@@ -108,13 +108,27 @@
 	},
 	"201701270002": {
 		"question": "You and Jimmy pick some food and get out of the plane safely, and then the plane explodes. The crash site is a forest and then you decide to [  ]",
+		"choices": ["search around", "build a fire", "climb up a tree"],
+		"destination": ["201701280001", "201701280002", "201701280003"]
+	},
+	"201701270003": {
+		"question": "'Water is more important,' you think. You and Jimmy jump out of the plane safely, and then the plane explodes. The crash site is a forest and then you decide to [  ]",
+		"choices": ["search around", "build a fire", "climb up a tree"],
+		"destination": ["201701280001", "201701280002", "201701280003"]
+	},
+	"201701280001": {
+		"question": "You meet a bear and get killed. [ENDING: Brown Bear]",
 		"choices": [],
 		"destination": []
 	},
-	"201701270003": {
+	"201701280002": {
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701280003": {
 		"question": "",
 		"choices": [],
 		"destination": []
 	}
-	
 }

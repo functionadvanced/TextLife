@@ -17,7 +17,7 @@
 		var story_data;
 		$.getJSON("story.json", function(data){
 			story_data = data;
-			DrawTree(0.1, 0.1, "201701150005");
+			DrawTree(0.1, 1, "201701150005");
 		});
 		var canvas = document.getElementById("myCanvas");
 		var ctx = canvas.getContext("2d");
@@ -27,10 +27,12 @@
 		function DrawTree(_x, _y, _uuid) { // draw the diagram
 			if (story_data[_uuid].flag) {
 				ctx.fillStyle = "purple";
-				ctx.fillText("****ENDING", _x*sx, _y*sy);
+				ctx.fillText("[ENDING]", _x*sx, _y*sy);
 				return _y;
 			}
 			story_data[_uuid].flag = true;
+			story_data[_uuid].x = _x;
+			story_data[_uuid].y = _y;
 			var len = story_data[_uuid].destination.length;
 			ctx.fillStyle = "red";
 			ctx.fillText("["+_uuid+"]", _x*sx, _y*sy);
@@ -46,6 +48,13 @@
 			ctx.stroke();
 			var now_pos = _y;
 			for (var i = 0;i < len;++i) {
+				if (story_data[story_data[_uuid].destination[i]].flag && story_data[_uuid].destination[i] != "201701150005") {
+					ctx.moveTo(_x*sx, _y*sy);
+					ctx.lineTo(story_data[story_data[_uuid].destination[i]].x*sx, story_data[story_data[_uuid].destination[i]].y*sy);
+					ctx.fillStyle = 'green';
+					ctx.fillText(story_data[_uuid].choices[i], (_x+0.5)*sx, (_y+story_data[story_data[_uuid].destination[i]].y)*0.5*sy);
+					continue;
+				}
 				if (i > 0)
 					now_pos++;
 				ctx.moveTo(_x*sx, _y*sy);
