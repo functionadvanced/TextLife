@@ -28,4 +28,7 @@ The story has multiple endings. An ending entry looks like this.
   "destination": ["201701150005"]
 },
 ```
+
+![alt tag](https://functionadvanced.github.io/TextLife/demo_ending.gif)
+
 There is only one choice of an ending entry ("Try Again"). And its only destination is the beginning of the story (node "201701150005"). Usually we identify a node as an ending like "[ENDING: Game Star]".
