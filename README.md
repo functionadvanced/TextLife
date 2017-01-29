@@ -24,4 +24,4 @@ The story has multiple endings. An ending entry looks like this.
   "destination": ["201701150005"]
 },
 ```
-There is only one choice of an ending entry ("Try Again"). And its only destination is the root of the story tree, i.e., the beginning node ("201701150005"). Usually we name the ending in [] like "[ENDING: Game Star]".
+There is only one choice of an ending entry ("Try Again"). And its only destination is the beginning of the story (node "201701150005"). Usually we identify a node as an ending like "[ENDING: Game Star]".
