@@ -5,8 +5,10 @@ A simple text game.
 ![alt tag](https://functionadvanced.github.io/TextLife/demo.gif)
 ## Story Model
 ### Structure
-The structure of the story is a directed graph.
+The structure of the story is a directed graph. We provide a page to view the whole story as a map. This map will automatically update when story changes.
 <a href="http://functionadvanced.github.io/TextLife/diagram.html">See here</a>
+
+![alt tag](https://functionadvanced.github.io/TextLife/demo_diagram.gif)
 ### Data
 The story data is stored in "story.json". Here is one sample entry of "story.json".
 ```json
