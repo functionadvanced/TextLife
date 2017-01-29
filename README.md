@@ -1,6 +1,8 @@
 # TextLife
 A simple text game.
 <a href="http://functionadvanced.github.io/TextLife/">Visit here</a>
+
+![alt tag](https://functionadvanced.github.io/TextLife/demo.gif)
 ## Story Model
 ### Structure
 The structure of the story is a directed graph.
