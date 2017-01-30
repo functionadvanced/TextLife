@@ -79,7 +79,7 @@
 	"201701210118": {
 		"question": "Cola is good. Suddenly the guy next to you knock the cola over. You are very angry and [  ]",
 		"choices": ["shout at him", "pour the rest cola on him", "punch on his face"],
-		"destination": ["201701150005", "201701150005", "201701150005"]
+		"destination": ["201701192127", "201701192127", "201701192127"]
 	},
 	"201701210119": {
 		"question": "",
