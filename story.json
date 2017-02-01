@@ -149,5 +149,25 @@
 		"question": "Which transportation will you choose?",
 		"choices": ["Superman's cape", "Batmobile", "Fire bolt", "Yecgaa Jetpack"],
 		"destination": ["201701310001", "201701310002", "201701310003", "201701310004"]
+	},
+	"201701310001":{
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701310002":{
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701310003":{
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201701310004":{
+		"question": "",
+		"choices": [],
+		"destination": []
 	}
 }
