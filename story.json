@@ -17,12 +17,6 @@
 		"destination": ["201701150005"]
 	},
 
-	"201701161648":{
-		"question": "On the way to the party, you die because of a severe car accident. [ENDING: Drive Faster]",
-		"choices": ["Try Again!"],
-		"destination": ["201701150005"]
-	},
-
 	"201701161735": {
 		"question": "It's a ticket of economy class. You get on the plane and [].",
 		"choices": ["go to sleep", "play PSP", "talk to the person beside you"],
@@ -150,5 +144,10 @@
 		"question": "",
 		"choices": [],
 		"destination": []
+	},
+	"201701312215":{
+		"question": "Which transportation will you choose?",
+		"choices": ["Superman's cape", "Batmobile", "Fire bolt", "Yecgaa Jetpack"],
+		"destination": ["201701310001", "201701310002", "201701310003", "201701310004"]
 	}
 }
