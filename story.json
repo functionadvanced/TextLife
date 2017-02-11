@@ -136,14 +136,14 @@
 		"destination": []
 	},
 	"201701290003": {
-		"question": "",
-		"choices": [],
-		"destination": []
+		"question": "You meet a wolf and get killed. [ENDING: Wild Wolf]",
+		"choices": ["Try Again!"],
+		"destination": ["201701150005"]
 	},
 	"201701290004": {
-		"question": "",
-		"choices": [],
-		"destination": []
+		"question": "You fall into the river and get drowned. [ENDING: Take a Bath]",
+		"choices": ["Try Again!"],
+		"destination": ["201701150005"]
 	},
 	"201701312215":{
 		"question": "Which transportation will you choose?",
