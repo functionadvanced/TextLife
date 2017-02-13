@@ -131,6 +131,21 @@
 		"destination": []
 	},
 	"201701290002": {
+		"question": "You arrive at the river. Now you feel hungry, so you [  ]",
+		"choices": ["catch fish by hand", "collect berries", "make a net first to fish"],
+		"destination": ["201702120001", "201702120002", "201702120003"]
+	},
+	"201702120001":{
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201702120002":{
+		"question": "",
+		"choices": [],
+		"destination": []
+	},
+	"201702120003":{
 		"question": "",
 		"choices": [],
 		"destination": []
