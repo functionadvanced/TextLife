@@ -7,13 +7,177 @@
 			body {
 				background-color: #f7efb9;
 			}
+			#all {
+				position: relative;
+			}
+			#m_svg {
+				pointer-events: none;
+			}
+			.node {
+				box-sizing: border-box;
+				position: absolute;
+                display: inline-block;
+				width: 120px;
+				height: 80px;
+				border-radius: 8px;
+				padding: 5px;
+                background-color:aliceblue;
+                border: 2px solid black;
+                text-align: center;
+                color: black;
+                font-size: 0.8rem;
+				overflow-y: scroll;
+			}
+			::-webkit-scrollbar {
+				width: 6px;
+			}
+			
+			::-webkit-scrollbar-track {
+				-webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+				box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+				border-radius: 5px;
+			}
+			
+			::-webkit-scrollbar-thumb {
+				border-radius: 5px;
+				-webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+				box-shadow: inset 0 0 3px rgba(0,0,0,0.5); 
+			}
 		</style>
 	</head>
 	<body>
 		<h1>Story Structure</h1>
-		<canvas id="myCanvas" width="8000" height="8000"></canvas>
+		<div id="all">
+			<svg id="m_svg" height="8000" width="8000">
+			</svg>
+			<div id="all_nodes"></div>
+		</div>
+		<!-- <canvas id="myCanvas" width="8000" height="8000"></canvas> -->
 	</body>
 	<script type="text/javascript">
+		let foo = [];
+		const ROOT_ID = "201701150005";
+		$.getJSON("story.json", data =>{
+			cal_subtree_width_depth(ROOT_ID, data, 0, 0);
+			console.log(data);
+			let temp = "";
+			let index = 0;
+			for (const [key, value] of Object.entries(data)) {
+				temp += generate_dom(key, value['question'], (value.offset_x + value.width / 2) * 150, value.depth * 100);
+				index++;
+			}
+			
+			// console.log(temp);
+			$('#all_nodes').html(temp);
+			for (const [key, value] of Object.entries(data)) draw_connect_point(key);
+			for (const [key, value] of Object.entries(data)) {
+				for (let t of value.destination) {
+					if (t != ROOT_ID) connect(key, t);
+				}
+			}
+			$('.node').click((e)=>{
+				let id = e.target.id;
+				console.log(data[id]);
+				// foo.push(id);
+				// move_dom(id, 100, 100, ()=>{
+				// 	if (foo.length > 1) {
+				// 		connect(foo[foo.length-2], foo[foo.length-1]);
+				// 	}
+				// });
+			});
+		});
+		function cal_subtree_width_depth(_id, data, offset_x, depth, root_id = ROOT_ID) {
+			let r = 0;
+			let current_offset_x = offset_x;
+			data[_id].offset_x = offset_x;
+			if (data[_id].destination.length > 0){
+				if (data[_id].destination != root_id){
+					for (let child of data[_id].destination) {
+						if (!data[child].width) {
+							const a = cal_subtree_width_depth(child, data, current_offset_x, depth + 1);
+							current_offset_x += a;
+							r += a;
+						}
+					}
+				}
+			}
+			r = Math.max(r, 1);
+			data[_id].width = r;
+			data[_id].depth = depth;
+			return r;
+		}
+		function generate_dom(_id, _text, x, y) {
+			return `<div class="node" id="${_id}" style="left:${x}px;top:${y}px">${_text}</div>`;
+		}
+		function move_dom(_id, dx, dy, callback) {
+			$(`#${_id}`).animate({'left': `+=${dx}`, 'top': `+=${dy}`}, 'fast', ()=>{
+				$('#group_'+_id).attr('transform', `translate(${get_rect(_id).x} ${get_rect(_id).y})`);
+				callback();
+			});
+		}
+
+		function get_rect(_id) {
+			let temp = $(`#${_id}`).position();
+			let dx = $(`#${_id}`).outerWidth();
+			let dy = $(`#${_id}`).outerHeight();
+			return {"x": temp.left, "y": temp.top, "dx": dx, "dy": dy};
+		}
+		function connect(f_id, t_id) {
+			let [[a, b], [c, d]] = get_closest_two_connect_point(f_id, t_id);
+			add_to_svg('path', {
+				'd': `M${a} ${b} L${c} ${d}`,
+				'stroke': 'gray', 'stroke-width': "3", 'fill': "none"
+			});
+		}
+		function add_to_svg(name, attr, parent_id = 'm_svg') {
+			let dom = document.createElementNS("http://www.w3.org/2000/svg", name);
+			for (const [key, value] of Object.entries(attr)) {
+				dom.setAttribute(key, value);
+			}
+			document.getElementById(parent_id).appendChild(dom);
+		}
+		function draw_dot(x, y, group_id) {
+			add_to_svg('circle', {'cx': x, 'cy': y, 'r': 4, 'fill':"gray"}, group_id);
+		}
+		function get_all_connect_points(_id) {
+			let g = get_rect(_id);
+			let all_points = [
+				[g.x+g.dx/4, g.y],[g.x+g.dx/2, g.y],[g.x+3*g.dx/4, g.y],
+				[g.x+g.dx/4, g.y+g.dy],[g.x+g.dx/2, g.y+g.dy],[g.x+3*g.dx/4, g.y+g.dy],
+				[g.x, g.y+g.dy/4],[g.x, g.y+g.dy/2],[g.x, g.y+3*g.dy/4],
+				[g.x+g.dx, g.y+g.dy/4],[g.x+g.dx, g.y+g.dy/2],[g.x+g.dx, g.y+3*g.dy/4],
+			];
+			return all_points;
+		}
+		function draw_connect_point(_id) {
+			let all_points = get_all_connect_points(_id);
+			add_to_svg('g', {'id': 'group_'+_id, 'transform': `translate(${get_rect(_id).x} ${get_rect(_id).y})`});
+			for (const [x, y] of all_points) {
+				draw_dot(x-get_rect(_id).x, y-get_rect(_id).y, 'group_'+_id);
+			}
+		}
+		function get_dist(p1, p2) {
+			let temp1 = p1[0] - p2[0];
+			let temp2 = p1[1] - p2[1];
+			return Math.sqrt(temp1 * temp1 + temp2 * temp2);
+		}
+		function get_closest_two_connect_point(id1, id2) {
+			let min_dist = 1000000;
+			let ma;
+			let mb;
+			for (let a of get_all_connect_points(id1)) {
+				for (let b of get_all_connect_points(id2)) {
+					let temp = get_dist(a, b);
+					if (temp < min_dist) {
+						min_dist = temp;
+						ma = a;
+						mb = b;
+					}
+				}
+			}
+			return [ma, mb];
+		}
+		/*
 		var story_data;
 		$.getJSON("story.json", function(data){
 			story_data = data;
@@ -65,6 +229,7 @@
 				now_pos=DrawTree(_x+1, now_pos, story_data[_uuid].destination[i]);
 			}
 			return now_pos;
-		}	
+		}
+		*/
 	</script>
 </html>
